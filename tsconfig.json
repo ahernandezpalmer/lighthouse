@@ -101,17 +101,6 @@
   ],
   "files": [
     // Opt-in to typechecking for some core tests.
-    "lighthouse-core/test/scripts/lantern/constants-test.js",
-    "lighthouse-core/test/gather/driver/execution-context-test.js",
-    "lighthouse-core/test/gather/driver-test.js",
-    "lighthouse-core/test/gather/gather-runner-test.js",
     "lighthouse-core/test/audits/script-treemap-data-test.js",
-    // Some files in lighthouse-core/test/lib are type-ready.
-    // "lighthouse-core/test/lib/arbitrary-equality-map-test.js",
-    // "lighthouse-core/test/lib/dependency-graph/simulator/tcp-connection-test.js",
-    // "lighthouse-core/test/lib/file-namer-test.js",
-    // "lighthouse-core/test/lib/line-number-from-jsonld-path-test.js",
-    // "lighthouse-core/test/lib/tappable-rects-test.js",
-    // "lighthouse-core/test/lib/third-party-web-test.js",
   ],
 }
