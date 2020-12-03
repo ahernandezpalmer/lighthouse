@@ -11,6 +11,7 @@ const config = {
   settings: {
     maxWaitForFcp: 15 * 1000,
     maxWaitForLoad: 35 * 1000,
+    formFactor: 'mobile',
   },
   audits: [
     'metrics/first-contentful-paint-3g',

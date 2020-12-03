@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const desktopDense4G = require('./constants.js').throttling.desktopDense4G;
+const constants = require('./constants.js')
 
 /** @type {LH.Config.Json} */
 const config = {
@@ -14,7 +14,9 @@ const config = {
     maxWaitForFcp: 15 * 1000,
     maxWaitForLoad: 35 * 1000,
     formFactor: 'desktop',
-    throttling: desktopDense4G,
+    throttling: constants.throttling.desktopDense4G,
+    screenEmulation: constants.screenEmulationMetrics.desktop,
+    emulatedUserAgent: constants.userAgents.desktop
   },
 };
 
