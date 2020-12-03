@@ -425,8 +425,8 @@ class Util {
     }
 
     const deviceEmulation = settings.formFactor === 'mobile'
-        ? Util.i18n.strings.runtimeMobileEmulation
-        : Util.i18n.strings.runtimeDesktopEmulation;
+      ? Util.i18n.strings.runtimeMobileEmulation
+      : Util.i18n.strings.runtimeDesktopEmulation;
 
     return {
       deviceEmulation,

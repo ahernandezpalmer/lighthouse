@@ -31,10 +31,11 @@ describe('emulation', () => {
         .mockResponse('Emulation.setTouchEmulationEnabled');
     });
 
-    const getSettings = (formFactor, disableDeviceScreenEmulation) => ({
+    const getSettings = (formFactor) => ({
       formFactor: formFactor,
     });
 
+    // TODO
     it('handles: formFactor: mobile / disableDeviceScreenEmulation: false', async () => {
       await emulation.emulate(driver, getSettings('mobile', false));
 

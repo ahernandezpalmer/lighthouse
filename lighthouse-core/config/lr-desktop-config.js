@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const constants = require('./constants.js')
+const constants = require('./constants.js');
 
 /** @type {LH.Config.Json} */
 const config = {
@@ -16,7 +16,7 @@ const config = {
     formFactor: 'desktop',
     throttling: constants.throttling.desktopDense4G,
     screenEmulation: constants.screenEmulationMetrics.desktop,
-    emulatedUserAgent: constants.userAgents.desktop
+    emulatedUserAgent: constants.userAgents.desktop,
   },
 };
 

@@ -33,7 +33,6 @@ const NO_CPU_THROTTLE_METRICS = {
  * @return {Promise<void>}
  */
 async function emulate(driver, settings) {
-
   // In DevTools, emulation is applied before Lighthouse starts (to deal with viewport emulation bugs)
   // As a result, we don't double-apply viewport emulation (devtools sets `disableScreenEmulation`).
   // UA emulation, however, is lost in the protocol handover from devtools frontend to the lighthouse_worker. So it's always applied.

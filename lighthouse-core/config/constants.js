@@ -77,7 +77,7 @@ const DESKTOP_EMULATION_METRICS = {
 const screenEmulationMetrics = {
   mobile: MOTOG4_EMULATION_METRICS,
   desktop: DESKTOP_EMULATION_METRICS,
-}
+};
 
 // eslint-disable-next-line max-len
 const MOTOG4_USERAGENT = 'Mozilla/5.0 (Linux; Android 7.0; Moto G (4)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4143.7 Mobile Safari/537.36 Chrome-Lighthouse';

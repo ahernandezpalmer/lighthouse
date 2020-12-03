@@ -274,7 +274,6 @@ describe('GatherRunner', function() {
       settings: {
         formFactor: 'mobile',
         throttlingMethod: 'provided',
-    ,
       },
     });
 
@@ -290,7 +289,6 @@ describe('GatherRunner', function() {
     /** @param {'mobile'|'desktop'|'none'} formFactor */
     const getSettings = formFactor => ({
       formFactor: formFactor,
-  ,
     });
 
     await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
