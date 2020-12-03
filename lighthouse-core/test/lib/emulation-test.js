@@ -33,7 +33,6 @@ describe('emulation', () => {
 
     const getSettings = (formFactor, disableDeviceScreenEmulation) => ({
       formFactor: formFactor,
-      internalDisableDeviceScreenEmulation: disableDeviceScreenEmulation,
     });
 
     it('handles: formFactor: mobile / disableDeviceScreenEmulation: false', async () => {

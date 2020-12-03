@@ -120,10 +120,8 @@ declare global {
       gatherMode?: boolean | string;
       /** Flag indicating that the browser storage should not be reset for the audit. */
       disableStorageReset?: boolean;
-      /** How emulation (useragent, device screen metrics, touch) should be applied. `none` indicates Lighthouse should leave the host browser as-is. */
-      formFactor?: 'mobile'|'desktop'|'none';
-      /** Dangerous setting only to be used by Lighthouse team. Disables the device metrics and touch emulation that formFactor defines. Details in emulation.js */
-      internalDisableDeviceScreenEmulation?: boolean
+      /** How Lighthouse should interpret this run in regards to perf scoring and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
+      formFactor: 'mobile'|'desktop';
       /** The method used to throttle the network. */
       throttlingMethod?: 'devtools'|'simulate'|'provided';
       /** The throttling config settings. */

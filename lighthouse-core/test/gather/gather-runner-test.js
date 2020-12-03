@@ -239,7 +239,7 @@ describe('GatherRunner', function() {
       const driver = fakeDriver;
       const config = makeConfig({
         passes: [],
-        settings: {formFactor: 'none', internalDisableDeviceScreenEmulation: false},
+        settings: {formFactor: 'none'},
       });
       const options = {requestedUrl, driver, settings: config.settings};
 
@@ -251,7 +251,7 @@ describe('GatherRunner', function() {
       const driver = fakeDriver;
       const config = makeConfig({
         passes: [],
-        settings: {formFactor: 'mobile', internalDisableDeviceScreenEmulation: false},
+        settings: {formFactor: 'mobile'},
       });
       const options = {requestedUrl, driver, settings: config.settings};
 
@@ -263,7 +263,7 @@ describe('GatherRunner', function() {
       const driver = fakeDriverUsingRealMobileDevice;
       const config = makeConfig({
         passes: [],
-        settings: {formFactor: 'none', internalDisableDeviceScreenEmulation: false},
+        settings: {formFactor: 'none'},
       });
       const options = {requestedUrl, driver, settings: config.settings};
 
@@ -275,7 +275,7 @@ describe('GatherRunner', function() {
       const driver = fakeDriverUsingRealMobileDevice;
       const config = makeConfig({
         passes: [],
-        settings: {formFactor: 'desktop', internalDisableDeviceScreenEmulation: false},
+        settings: {formFactor: 'desktop'},
       });
       const options = {requestedUrl, driver, settings: config.settings};
 
@@ -326,7 +326,7 @@ describe('GatherRunner', function() {
       settings: {
         formFactor: 'mobile',
         throttlingMethod: 'provided',
-        internalDisableDeviceScreenEmulation: false,
+    ,
       },
     });
 
@@ -342,7 +342,7 @@ describe('GatherRunner', function() {
     /** @param {'mobile'|'desktop'|'none'} formFactor */
     const getSettings = formFactor => ({
       formFactor: formFactor,
-      internalDisableDeviceScreenEmulation: false,
+  ,
     });
 
     await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
@@ -363,7 +363,7 @@ describe('GatherRunner', function() {
   it('sets throttling according to settings', async () => {
     await GatherRunner.setupDriver(driver, {
       settings: {
-        formFactor: 'mobile', internalDisableDeviceScreenEmulation: false,
+        formFactor: 'mobile',
         throttlingMethod: 'devtools',
         throttling: {
           requestLatencyMs: 100,

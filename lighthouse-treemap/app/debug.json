@@ -16865,7 +16865,6 @@
       "gatherMode": false,
       "disableStorageReset": false,
       "formFactor": "mobile",
-      "internalDisableDeviceScreenEmulation": false,
       "channel": "cli",
       "budgets": null,
       "locale": "en-US",
