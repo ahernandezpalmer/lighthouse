@@ -61,6 +61,7 @@ const defaultSettings = {
   gatherMode: false,
   disableStorageReset: false,
   formFactor: 'mobile',
+  disableScreenEmulation: false,
   channel: 'node',
 
   // the following settings have no defaults but we still want ensure that `key in settings`

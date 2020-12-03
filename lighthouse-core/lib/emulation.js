@@ -85,7 +85,7 @@ const emulationParams = {
  */
 async function emulate(driver, settings) {
   // TODO this is keeyed off the disable flags OR config
-  if (!settings.formFactor || settings.formFactor === 'none') return;
+
   const params = emulationParams[settings.formFactor];
 
   // In DevTools, emulation is applied before Lighthouse starts (to deal with viewport emulation bugs)
@@ -96,7 +96,7 @@ async function emulate(driver, settings) {
   await driver.sendCommand('Network.enable');
   await driver.sendCommand('Network.setUserAgentOverride', {userAgent: params.userAgent});
 
-  if (!settings.internalDisableDeviceScreenEmulation) {
+  if (settings.disableScreenEmulation) {
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', params.metrics);
     await driver.sendCommand('Emulation.setTouchEmulationEnabled', {enabled: params.touchEnabled});
   }
