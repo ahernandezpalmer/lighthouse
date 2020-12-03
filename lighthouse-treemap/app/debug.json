@@ -16864,7 +16864,7 @@
       "auditMode": true,
       "gatherMode": false,
       "disableStorageReset": false,
-      "emulatedFormFactor": "mobile",
+      "formFactor": "mobile",
       "internalDisableDeviceScreenEmulation": false,
       "channel": "cli",
       "budgets": null,

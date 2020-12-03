@@ -32,11 +32,11 @@ describe('emulation', () => {
     });
 
     const getSettings = (formFactor, disableDeviceScreenEmulation) => ({
-      emulatedFormFactor: formFactor,
+      formFactor: formFactor,
       internalDisableDeviceScreenEmulation: disableDeviceScreenEmulation,
     });
 
-    it('handles: emulatedFormFactor: mobile / disableDeviceScreenEmulation: false', async () => {
+    it('handles: formFactor: mobile / disableDeviceScreenEmulation: false', async () => {
       await emulation.emulate(driver, getSettings('mobile', false));
 
       const uaArgs = connectionStub.sendCommand.findInvocation('Network.setUserAgentOverride');
@@ -48,7 +48,7 @@ describe('emulation', () => {
       expect(emulateArgs).toMatchObject({mobile: true});
     });
 
-    it('handles: emulatedFormFactor: desktop / disableDeviceScreenEmulation: false', async () => {
+    it('handles: formFactor: desktop / disableDeviceScreenEmulation: false', async () => {
       await emulation.emulate(driver, getSettings('desktop', false));
 
       const uaArgs = connectionStub.sendCommand.findInvocation('Network.setUserAgentOverride');
@@ -60,7 +60,7 @@ describe('emulation', () => {
       expect(emulateArgs).toMatchObject({mobile: false});
     });
 
-    it('handles: emulatedFormFactor: none / disableDeviceScreenEmulation: false', async () => {
+    it('handles: formFactor: none / disableDeviceScreenEmulation: false', async () => {
       await emulation.emulate(driver, getSettings('none', false));
       expect(connectionStub.sendCommand).not.toHaveBeenCalledWith(
         'Network.setUserAgentOverride',
@@ -72,7 +72,7 @@ describe('emulation', () => {
       );
     });
 
-    it('handles: emulatedFormFactor: mobile / disableDeviceScreenEmulation: true', async () => {
+    it('handles: formFactor: mobile / disableDeviceScreenEmulation: true', async () => {
       await emulation.emulate(driver, getSettings('mobile', true));
       const uaArgs = connectionStub.sendCommand.findInvocation('Network.setUserAgentOverride');
       expect(uaArgs).toMatchObject({userAgent: emulation.MOBILE_USERAGENT});
@@ -83,7 +83,7 @@ describe('emulation', () => {
       );
     });
 
-    it('handles: emulatedFormFactor: desktop / disableDeviceScreenEmulation: true', async () => {
+    it('handles: formFactor: desktop / disableDeviceScreenEmulation: true', async () => {
       await emulation.emulate(driver, getSettings('desktop', true));
       const uaArgs = connectionStub.sendCommand.findInvocation('Network.setUserAgentOverride');
       expect(uaArgs).toMatchObject({userAgent: emulation.DESKTOP_USERAGENT});
@@ -94,7 +94,7 @@ describe('emulation', () => {
       );
     });
 
-    it('handles: emulatedFormFactor: none / disableDeviceScreenEmulation: true', async () => {
+    it('handles: formFactor: none / disableDeviceScreenEmulation: true', async () => {
       await emulation.emulate(driver, getSettings('none', true));
       expect(connectionStub.sendCommand).not.toHaveBeenCalledWith(
         'Network.setUserAgentOverride',

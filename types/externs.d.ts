@@ -121,8 +121,8 @@ declare global {
       /** Flag indicating that the browser storage should not be reset for the audit. */
       disableStorageReset?: boolean;
       /** How emulation (useragent, device screen metrics, touch) should be applied. `none` indicates Lighthouse should leave the host browser as-is. */
-      emulatedFormFactor?: 'mobile'|'desktop'|'none';
-      /** Dangerous setting only to be used by Lighthouse team. Disables the device metrics and touch emulation that emulatedFormFactor defines. Details in emulation.js */
+      formFactor?: 'mobile'|'desktop'|'none';
+      /** Dangerous setting only to be used by Lighthouse team. Disables the device metrics and touch emulation that formFactor defines. Details in emulation.js */
       internalDisableDeviceScreenEmulation?: boolean
       /** The method used to throttle the network. */
       throttlingMethod?: 'devtools'|'simulate'|'provided';

@@ -11,6 +11,6 @@ const experimentalConfig = require('../../../../../lighthouse-core/config/experi
 module.exports = {
   ...experimentalConfig,
   settings: {
-    emulatedFormFactor: 'desktop',
+    formFactor: 'desktop',
   },
 };

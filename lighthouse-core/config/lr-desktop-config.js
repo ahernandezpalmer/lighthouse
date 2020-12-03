@@ -13,7 +13,7 @@ const config = {
   settings: {
     maxWaitForFcp: 15 * 1000,
     maxWaitForLoad: 35 * 1000,
-    emulatedFormFactor: 'desktop',
+    formFactor: 'desktop',
     throttling: desktopDense4G,
   },
 };

@@ -425,9 +425,9 @@ class Util {
     }
 
     let deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
-    if (settings.emulatedFormFactor === 'mobile') {
+    if (settings.formFactor === 'mobile') {
       deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
-    } else if (settings.emulatedFormFactor === 'desktop') {
+    } else if (settings.formFactor === 'desktop') {
       deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
     }
 

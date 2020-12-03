@@ -84,8 +84,8 @@ const emulationParams = {
  * @return {Promise<void>}
  */
 async function emulate(driver, settings) {
-  if (!settings.emulatedFormFactor || settings.emulatedFormFactor === 'none') return;
-  const params = emulationParams[settings.emulatedFormFactor];
+  if (!settings.formFactor || settings.formFactor === 'none') return;
+  const params = emulationParams[settings.formFactor];
 
   // In DevTools, emulation is applied before Lighthouse starts (to deal with viewport emulation bugs)
   // As a result, we don't double-apply viewport emulation (devtools sets `internalDisableDeviceScreenEmulation`).

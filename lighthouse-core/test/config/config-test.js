@@ -789,16 +789,16 @@ describe('Config', () => {
         extends: 'lighthouse:default',
         settings: {
           disableStorageReset: true,
-          emulatedFormFactor: 'mobile',
+          formFactor: 'mobile',
         },
       },
-      {emulatedFormFactor: 'desktop'}
+      {formFactor: 'desktop'}
     );
 
     assert.ok(config, 'failed to generate config');
     assert.ok(typeof config.settings.maxWaitForLoad === 'number', 'missing setting from default');
     assert.ok(config.settings.disableStorageReset, 'missing setting from extension config');
-    assert.ok(config.settings.emulatedFormFactor === 'desktop', 'missing setting from flags');
+    assert.ok(config.settings.formFactor === 'desktop', 'missing setting from flags');
   });
 
   it('inherits default settings when undefined', () => {
