@@ -42,7 +42,7 @@ class FullPageScreenshot extends Gatherer {
     const height = Math.min(metrics.contentSize.height, MAX_SCREENSHOT_HEIGHT);
 
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
-      mobile: passContext.baseArtifacts.TestedAsMobileDevice,
+      mobile: passContext.settings.formFactor === 'mobile',
       height,
       width,
       deviceScaleFactor: 1,
@@ -117,8 +117,7 @@ class FullPageScreenshot extends Gatherer {
     // In case some other program is controlling emulation, try to remember what the device looks
     // like now and reset after gatherer is done.
     // TODO(paulirish).. pull this from disableScreenEmu probably ***
-    const lighthouseControlsEmulation = passContext.settings.formFactor !== 'none' &&
-      !passContext.settings.internalDisableDeviceScreenEmulation;
+    const lighthouseControlsEmulation = passContext.settings.formFactor !== 'none' && !passContext.settings.internalDisableDeviceScreenEmulation;
 
     try {
       return {
@@ -152,7 +151,7 @@ class FullPageScreenshot extends Gatherer {
         observedDeviceMetrics.screenOrientation.type =
           snakeCaseToCamelCase(observedDeviceMetrics.screenOrientation.type);
         await driver.sendCommand('Emulation.setDeviceMetricsOverride', {
-          mobile: passContext.baseArtifacts.TestedAsMobileDevice, // could easily be wrong
+          mobile: passContext.settings.formFactor === 'mobile',
           ...observedDeviceMetrics,
         });
       }

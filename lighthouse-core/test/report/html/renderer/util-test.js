@@ -35,7 +35,6 @@ describe('util helpers', () => {
 
   it('builds device emulation string', () => {
     const get = opts => Util.getEmulationDescriptions(opts).deviceEmulation;
-    assert.equal(get({formFactor: 'none'}), 'No emulation');
     assert.equal(get({formFactor: 'mobile'}), 'Emulated Moto G4');
     assert.equal(get({formFactor: 'desktop'}), 'Emulated Desktop');
   });

@@ -84,6 +84,7 @@ const emulationParams = {
  * @return {Promise<void>}
  */
 async function emulate(driver, settings) {
+  // TODO this is keeyed off the disable flags OR config
   if (!settings.formFactor || settings.formFactor === 'none') return;
   const params = emulationParams[settings.formFactor];
 

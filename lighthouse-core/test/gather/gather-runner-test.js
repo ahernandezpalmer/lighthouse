@@ -232,58 +232,6 @@ describe('GatherRunner', function() {
     });
   });
 
-  describe('collects TestedAsMobileDevice as an artifact', () => {
-    const requestedUrl = 'https://example.com';
-
-    it('works when running on desktop device without emulation', async () => {
-      const driver = fakeDriver;
-      const config = makeConfig({
-        passes: [],
-        settings: {formFactor: 'none'},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(false);
-    });
-
-    it('works when running on desktop device with mobile emulation', async () => {
-      const driver = fakeDriver;
-      const config = makeConfig({
-        passes: [],
-        settings: {formFactor: 'mobile'},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(true);
-    });
-
-    it('works when running on mobile device without emulation', async () => {
-      const driver = fakeDriverUsingRealMobileDevice;
-      const config = makeConfig({
-        passes: [],
-        settings: {formFactor: 'none'},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(true);
-    });
-
-    it('works when running on mobile device with desktop emulation', async () => {
-      const driver = fakeDriverUsingRealMobileDevice;
-      const config = makeConfig({
-        passes: [],
-        settings: {formFactor: 'desktop'},
-      });
-      const options = {requestedUrl, driver, settings: config.settings};
-
-      const results = await GatherRunner.run(config.passes, options);
-      expect(results.TestedAsMobileDevice).toBe(false);
-    });
-  });
-
   describe('collects HostFormFactor as an artifact', () => {
     const requestedUrl = 'https://example.com';
 

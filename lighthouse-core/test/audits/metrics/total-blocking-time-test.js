@@ -14,11 +14,10 @@ const devtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.
 const lcpTrace = require('../../fixtures/traces/lcp-m78.json');
 const lcpDevtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 
-function generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice}) {
+function generateArtifacts({trace, devtoolsLog}) {
   return {
     traces: {[TBTAudit.DEFAULT_PASS]: trace},
     devtoolsLogs: {[TBTAudit.DEFAULT_PASS]: devtoolsLog},
-    TestedAsMobileDevice,
   };
 }
 
@@ -30,7 +29,7 @@ function generateContext({throttlingMethod}) {
 
 describe('Performance: total-blocking-time audit', () => {
   it('evaluates Total Blocking Time metric properly', async () => {
-    const artifacts = generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice: true});
+    const artifacts = generateArtifacts({trace, devtoolsLog});
     const context = generateContext({throttlingMethod: 'provided'});
 
     const output = await TBTAudit.audit(artifacts, context);
@@ -41,7 +40,7 @@ describe('Performance: total-blocking-time audit', () => {
 
   it('adjusts scoring based on form factor', async () => {
     const artifactsMobile = generateArtifacts({trace: lcpTrace,
-      devtoolsLog: lcpDevtoolsLog, TestedAsMobileDevice: true});
+      devtoolsLog: lcpDevtoolsLog});
     const contextMobile = generateContext({throttlingMethod: 'provided'});
 
     const outputMobile = await TBTAudit.audit(artifactsMobile, contextMobile);
@@ -50,7 +49,7 @@ describe('Performance: total-blocking-time audit', () => {
     expect(outputMobile.displayValue).toBeDisplayString('330\xa0ms');
 
     const artifactsDesktop = generateArtifacts({trace: lcpTrace,
-      devtoolsLog: lcpDevtoolsLog, TestedAsMobileDevice: false});
+      devtoolsLog: lcpDevtoolsLog});
     const contextDesktop = generateContext({throttlingMethod: 'provided'});
 
     const outputDesktop = await TBTAudit.audit(artifactsDesktop, contextDesktop);

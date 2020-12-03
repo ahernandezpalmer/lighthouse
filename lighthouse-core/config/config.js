@@ -28,7 +28,6 @@ const {requireAudits, resolveModule} = require('./config-helpers.js');
 const BASE_ARTIFACT_BLANKS = {
   fetchTime: '',
   LighthouseRunWarnings: '',
-  TestedAsMobileDevice: '',
   HostFormFactor: '',
   HostUserAgent: '',
   NetworkUserAgent: '',

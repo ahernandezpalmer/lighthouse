@@ -412,7 +412,6 @@ describe('Runner', () => {
       const artifacts = {
         ...baseArtifacts,
         ViewportDimensions: new Error(errorMessage),
-        TestedAsMobileDevice: true,
       };
       const artifactsPath = '.tmp/test_artifacts';
       const resolvedPath = path.resolve(process.cwd(), artifactsPath);
@@ -424,7 +423,7 @@ describe('Runner', () => {
           auditMode: resolvedPath,
         },
         audits: [
-          // requires ViewportDimensions and TestedAsMobileDevice artifacts
+          // requires ViewportDimensions artifact
           'content-width',
         ],
       });

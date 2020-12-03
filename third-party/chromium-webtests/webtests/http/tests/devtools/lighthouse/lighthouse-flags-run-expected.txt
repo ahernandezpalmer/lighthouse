@@ -16,7 +16,6 @@ Generate report: enabled visible
 formFactor: desktop
 disableStorageReset: false
 throttlingMethod: devtools
-TestedAsMobileDevice: false
 
 View Trace Button Text: "View Trace"
 View Trace Button Title: ""

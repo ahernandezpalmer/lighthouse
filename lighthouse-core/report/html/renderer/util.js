@@ -424,12 +424,9 @@ class Util {
         networkThrottling = Util.i18n.strings.runtimeUnknown;
     }
 
-    let deviceEmulation = Util.i18n.strings.runtimeNoEmulation;
-    if (settings.formFactor === 'mobile') {
-      deviceEmulation = Util.i18n.strings.runtimeMobileEmulation;
-    } else if (settings.formFactor === 'desktop') {
-      deviceEmulation = Util.i18n.strings.runtimeDesktopEmulation;
-    }
+    const deviceEmulation = settings.formFactor === 'mobile'
+        ? Util.i18n.strings.runtimeMobileEmulation
+        : Util.i18n.strings.runtimeDesktopEmulation;
 
     return {
       deviceEmulation,

@@ -14,11 +14,10 @@ const devtoolsLog = require('../../fixtures/traces/lcp-m78.devtools.log.json');
 const preLcpTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const preLcpDevtoolsLog = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
 
-function generateArtifacts({trace, devtoolsLog, TestedAsMobileDevice, HostUserAgent}) {
+function generateArtifacts({trace, devtoolsLog, HostUserAgent}) {
   return {
     traces: {[LCPAudit.DEFAULT_PASS]: trace},
     devtoolsLogs: {[LCPAudit.DEFAULT_PASS]: devtoolsLog},
-    TestedAsMobileDevice,
     HostUserAgent,
   };
 }
@@ -34,7 +33,6 @@ describe('Performance: largest-contentful-paint audit', () => {
     const artifactsMobile = generateArtifacts({
       trace,
       devtoolsLog,
-      TestedAsMobileDevice: true,
       HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',
@@ -49,7 +47,6 @@ describe('Performance: largest-contentful-paint audit', () => {
     const artifactsDesktop = generateArtifacts({
       trace,
       devtoolsLog,
-      TestedAsMobileDevice: false,
       HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',
@@ -66,7 +63,6 @@ describe('Performance: largest-contentful-paint audit', () => {
     const artifactsOldChrome = generateArtifacts({
       trace: preLcpTrace,
       devtoolsLog: preLcpDevtoolsLog,
-      TestedAsMobileDevice: true,
       HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',
@@ -79,7 +75,6 @@ describe('Performance: largest-contentful-paint audit', () => {
     const artifactsNewChrome = generateArtifacts({
       trace: preLcpTrace,
       devtoolsLog: preLcpDevtoolsLog,
-      TestedAsMobileDevice: true,
       HostUserAgent: 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5 Build/MRA58N) ' +
         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 ' +
         'Mobile Safari/537.36 Chrome-Lighthouse',

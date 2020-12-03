@@ -25,7 +25,6 @@ describe('SEO: Font size audit', () => {
       URL,
       MetaElements: [],
       FontSize: [],
-      TestedAsMobileDevice: true,
     };
 
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
@@ -48,7 +47,6 @@ describe('SEO: Font size audit', () => {
           {nodeId: 2, textLength: 31, fontSize: 11, parentNode: {nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
 
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
@@ -68,7 +66,6 @@ describe('SEO: Font size audit', () => {
           {nodeId: 1, textLength: 0, fontSize: 11, parentNode: {nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
 
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
@@ -88,7 +85,6 @@ describe('SEO: Font size audit', () => {
           {nodeId: 2, textLength: 22, fontSize: 11, parentNode: {nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     assert.equal(auditResult.score, 1);
@@ -125,7 +121,6 @@ describe('SEO: Font size audit', () => {
           {nodeId: 3, textLength: 2, fontSize: 10, parentNode: {}, cssRule: style2},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
 
@@ -147,7 +142,6 @@ describe('SEO: Font size audit', () => {
           {textLength: 10, fontSize: 10, parentNode: {nodeId: 1, nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     assert.equal(auditResult.score, 0);
@@ -170,7 +164,6 @@ describe('SEO: Font size audit', () => {
           {textLength: 50, fontSize: 10, parentNode: {nodeId: 1, nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     assert.equal(auditResult.score, 0);
@@ -190,7 +183,6 @@ describe('SEO: Font size audit', () => {
           {textLength: 22, fontSize: 11, parentNode: {nodeId: 2, nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     expect(auditResult.displayValue).toBeDisplayString('89.78% legible text');
@@ -209,7 +201,6 @@ describe('SEO: Font size audit', () => {
           {textLength: 4, fontSize: 11, parentNode: {nodeId: 2, nodeName: 'p', attributes: []}},
         ],
       },
-      TestedAsMobileDevice: true,
     };
     const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
     expect(auditResult.displayValue).toBeDisplayString('2.48% legible text');
@@ -220,9 +211,10 @@ describe('SEO: Font size audit', () => {
       URL,
       MetaElements: [],
       FontSize: {},
-      TestedAsMobileDevice: false,
     };
-    const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
+    const desktopContext = getFakeContext();
+    desktopContext.settings = {formFactor: 'desktop'};
+    const auditResult = await FontSizeAudit.audit(artifacts, desktopContext);
     expect(auditResult.score).toBe(1);
     expect(auditResult.notApplicable).toBe(true);
   });
@@ -237,7 +229,6 @@ describe('SEO: Font size audit', () => {
             {textLength: 1, fontSize: 1, parentNode: {...nodeProperties}, cssRule: style},
           ],
         },
-        TestedAsMobileDevice: true,
       };
       const auditResult = await FontSizeAudit.audit(artifacts, getFakeContext());
       expect(auditResult.details.items).toHaveLength(1);

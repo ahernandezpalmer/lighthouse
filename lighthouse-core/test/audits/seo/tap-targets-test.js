@@ -15,14 +15,13 @@ const getFakeContext = () => ({computedCache: new Map()});
 function auditTapTargets(tapTargets, {MetaElements = [{
   name: 'viewport',
   content: 'width=device-width',
-}], TestedAsMobileDevice = true} = {}) {
+}]} = {}, context = getFakeContext()) {
   const artifacts = {
     TapTargets: tapTargets,
     MetaElements,
-    TestedAsMobileDevice,
   };
 
-  return TapTargetsAudit.audit(artifacts, getFakeContext());
+  return TapTargetsAudit.audit(artifacts, context);
 }
 
 const tapTargetSize = 10;
@@ -213,9 +212,12 @@ describe('SEO: Tap targets audit', () => {
   });
 
   it('is not applicable on desktop', async () => {
+    const desktopContext = getFakeContext();
+    desktopContext.settings = {formFactor: 'desktop'};
+
     const auditResult = await auditTapTargets(getBorderlineTapTargets({
       overlapSecondClientRect: true,
-    }), {TestedAsMobileDevice: false});
+    }), desktopContext);
     assert.equal(auditResult.score, 1);
     assert.equal(auditResult.notApplicable, true);
   });

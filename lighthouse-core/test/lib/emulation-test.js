@@ -59,6 +59,7 @@ describe('emulation', () => {
       expect(emulateArgs).toMatchObject({mobile: false});
     });
 
+    // TODO
     it('handles: formFactor: none / disableDeviceScreenEmulation: false', async () => {
       await emulation.emulate(driver, getSettings('none', false));
       expect(connectionStub.sendCommand).not.toHaveBeenCalledWith(

@@ -115,12 +115,9 @@ describe('FullPageScreenshot gatherer', () => {
     });
     const passContext = {
       settings: {
-        formFactor: 'none',
+        formFactor: 'mobile',
       },
       driver,
-      baseArtifacts: {
-        TestedAsMobileDevice: true,
-      },
     };
 
     await fpsGatherer.afterPass(passContext);
