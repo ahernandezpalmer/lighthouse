@@ -163,6 +163,17 @@ function assertValidGatherer(gathererInstance, gathererName) {
 }
 
 /**
+ *
+ * @param {LH.Config.Settings} settings
+ */
+function assertValidSettings(settings) {
+  // @ts-expect-error Checking for removed settings
+  if (settings['emulatedFormFactor'] || settings['internalDisableDeviceScreenEmulation']) {
+    throw new Error('Emulation setting changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md'); // eslint-disable-line max-len
+  }
+}
+
+/**
  * Throws if pluginName is invalid or (somehow) collides with a category in the
  * configJSON being added to.
  * @param {LH.Config.Json} configJSON
@@ -354,6 +365,7 @@ class Config {
 
     Config.filterConfigIfNeeded(this);
 
+    assertValidSettings(this.settings);
     assertValidPasses(this.passes, this.audits);
     assertValidCategories(this.categories, this.audits, this.groups);
 
