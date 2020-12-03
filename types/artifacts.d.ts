@@ -613,6 +613,8 @@ declare global {
         processEvents: Array<TraceEvent>;
         /** The subset of trace events from the page's main thread, sorted by timestamp. */
         mainThreadEvents: Array<TraceEvent>;
+        /** The subset of trace events from the main frame and any child frames, sorted by timestamp. */
+        frameTreeEvents: Array<TraceEvent>;
         /** IDs for the trace's main frame, process, and thread. */
         mainFrameIds: {pid: number, tid: number, frameId: string};
         /** The list of frames committed in the trace. */
