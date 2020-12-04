@@ -32,13 +32,15 @@ describe('Metrics: CLS All Frames', () => {
     const cat = 'loading,rail,devtools.timeline';
     const context = {computedCache: new Map()};
     trace.traceEvents.push(
+      /* eslint-disable max-len */
       {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: mainFrame, url: 'https://example.com'}}},
       {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: childFrame, parent: mainFrame, url: 'https://frame.com'}}},
       {name: 'LayoutShift', cat, args: {frame: mainFrame, data: {had_recent_input: false, score: 1}}},
       {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 1}}},
       {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: false, score: 1}}},
       {name: 'LayoutShift', cat, args: {frame: mainFrame, data: {had_recent_input: true, score: 1}}},
-      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1}}}
+      /* eslint-enable max-len */
     );
     const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
     expect(result.value).toBe(3);
@@ -52,6 +54,7 @@ describe('Metrics: CLS All Frames', () => {
     const cat = 'loading,rail,devtools.timeline';
     const context = {computedCache: new Map()};
     trace.traceEvents.push(
+      /* eslint-disable max-len */
       {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: mainFrame, url: 'https://example.com'}}},
       {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: childFrame, parent: mainFrame, url: 'https://frame.com'}}},
       {name: 'FrameCommittedInBrowser', cat, args: {data: {frame: otherMainFrame, url: 'https://example.com'}}},
@@ -61,7 +64,8 @@ describe('Metrics: CLS All Frames', () => {
       {name: 'LayoutShift', cat, args: {frame: mainFrame, data: {had_recent_input: true, score: 1}}},
       {name: 'LayoutShift', cat, args: {frame: childFrame, data: {had_recent_input: true, score: 1}}},
       {name: 'LayoutShift', cat, args: {frame: otherMainFrame, data: {had_recent_input: false, score: 1}}},
-      {name: 'LayoutShift', cat, args: {frame: otherMainFrame, data: {had_recent_input: false, score: 1}}},
+      {name: 'LayoutShift', cat, args: {frame: otherMainFrame, data: {had_recent_input: false, score: 1}}}
+      /* eslint-enable max-len */
     );
     const result = await CumulativeLayoutShiftAllFrames.request(trace, context);
     expect(result.value).toBe(3);
