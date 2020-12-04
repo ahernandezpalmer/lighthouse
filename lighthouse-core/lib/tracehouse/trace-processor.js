@@ -507,67 +507,37 @@ class TraceProcessor {
   /**
    * @param {LH.TraceEvent[]} events
    * @param {LH.TraceEvent} timeOriginEvent
-   * @return {LCPEvent | undefined}
+   * @return {{lcp: LCPEvent | undefined, invalidated: boolean}}
    */
   static computeValidLCPAllFrames(events, timeOriginEvent) {
     const lcpEvents = events.filter(this.isLCPEvent).reverse();
 
-    /** @type {Map<string, LCPCandidateEvent | undefined>} */
-    const lcpEventsByFrame = new Map();
+    /** @type {Map<string, LCPEvent>} */
+    const finalLcpEventsByFrame = new Map();
     for (const e of lcpEvents) {
       if (e.ts <= timeOriginEvent.ts) break;
 
       // Already found final LCP state of this frame.
       const frame = e.args.frame;
-      if (lcpEventsByFrame.has(frame)) continue;
+      if (finalLcpEventsByFrame.has(frame)) continue;
 
-      if (this.isLCPCandidateEvent(e)) {
-        lcpEventsByFrame.set(frame, e);
-      } else {
-        // Must be invalidate event.
-        lcpEventsByFrame.set(frame, undefined);
-      }
+      finalLcpEventsByFrame.set(frame, e);
     }
 
     /** @type {LCPCandidateEvent | undefined} */
     let maxLcpAcrossFrames;
-    for (const lcp of lcpEventsByFrame.values()) {
-      if (!lcp || !lcp.args.data || !lcp.args.data.size) continue;
+    for (const lcp of finalLcpEventsByFrame.values()) {
+      if (!this.isLCPCandidateEvent(lcp)) continue;
       if (!maxLcpAcrossFrames || lcp.args.data.size > maxLcpAcrossFrames.args.data.size) {
         maxLcpAcrossFrames = lcp;
       }
     }
 
-    return maxLcpAcrossFrames;
-  }
-
-  /**
-   * TODO: Deprecate and unify with computeValidLCPAllFrames when invalidate flag is no longer needed.
-   * @param {LH.TraceEvent[]} events
-   * @param {LH.TraceEvent} timeOriginEvt
-   * @return {{lcp: LH.TraceEvent | undefined, invalidated: boolean}}
-   */
-  static computeValidLCP(events, timeOriginEvt) {
-    let lcp;
-    let invalidated = false;
-    // Iterate the events backwards.
-    for (let i = events.length - 1; i >= 0; i--) {
-      const e = events[i];
-      // If the event's timestamp is before the time origin, stop.
-      if (e.ts <= timeOriginEvt.ts) break;
-      // If the last lcp event in the trace is 'Invalidate', there is inconclusive data to determine LCP.
-      if (e.name === 'largestContentfulPaint::Invalidate') {
-        invalidated = true;
-        break;
-      }
-      // If not an lcp 'Candidate', keep iterating.
-      if (e.name !== 'largestContentfulPaint::Candidate') continue;
-      // Found the last LCP candidate in the trace, let's use it.
-      lcp = e;
-      break;
-    }
-
-    return {lcp, invalidated};
+    return {
+      lcp: maxLcpAcrossFrames,
+      // LCP events were found, but final LCP event of every frame was an invalidate event.
+      invalidated: Boolean(!maxLcpAcrossFrames && finalLcpEventsByFrame.size),
+    };
   }
 
   /**
@@ -673,7 +643,7 @@ class TraceProcessor {
     const frameTimings = this.computeKeyTimingsForFrame(frameEvents, {timeOriginEvt});
 
     // Compute LCP for all frames.
-    const lcpAllFramesEvt = this.computeValidLCPAllFrames(frameTreeEvents, timeOriginEvt);
+    const lcpAllFramesEvt = this.computeValidLCPAllFrames(frameTreeEvents, timeOriginEvt).lcp;
 
     // Subset all trace events to just our tab's process (incl threads other than main)
     // stable-sort events to keep them correctly nested.
@@ -832,7 +802,7 @@ class TraceProcessor {
     // LCP comes from the latest `largestContentfulPaint::Candidate`, but it can be invalidated
     // by a `largestContentfulPaint::Invalidate` event. In the case that the last candidate is
     // invalidated, the value will be undefined.
-    const lcpResult = this.computeValidLCP(frameEvents, timeOriginEvt);
+    const lcpResult = this.computeValidLCPAllFrames(frameEvents, timeOriginEvt);
 
     const load = frameEvents.find(e => e.name === 'loadEventEnd' && e.ts > timeOriginEvt.ts);
     const domContentLoaded = frameEvents.find(

@@ -458,7 +458,7 @@ Object {
       it('uses latest candidate', () => {
         const testTrace = createTestTrace({timeOrigin: 0, traceEnd: 2000});
         const frame = testTrace.traceEvents[0].args.frame;
-        const args = {frame};
+        const args = {frame, data: {size: 50}};
         const cat = 'loading,rail,devtools.timeline';
         testTrace.traceEvents.push(
           {name: 'largestContentfulPaint::Candidate', cat, args, ts: 1000, duration: 10},
