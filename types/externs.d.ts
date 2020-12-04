@@ -290,11 +290,11 @@ declare global {
             old_rect?: Array<number>,
             new_rect?: Array<number>,
           }>;
-          score?: number,
+          score?: number;
           had_recent_input?: boolean;
           compositeFailed?: number;
           unsupportedProperties?: string[];
-          size?: number,
+          size?: number;
         };
         frame?: string;
         name?: string;

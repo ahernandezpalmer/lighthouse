@@ -161,8 +161,8 @@ describe('TraceProcessor', () => {
   describe('resolveRootFrames', () => {
     it('basic case', () => {
       const frames = [
-        {frame: 'A'},
-        {frame: 'B', parent: 'A'},
+        {id: 'A'},
+        {id: 'B', parent: 'A'},
       ];
       const rootFrames = TraceProcessor.resolveRootFrames(frames);
       expect([...rootFrames.entries()]).toEqual([
@@ -173,7 +173,7 @@ describe('TraceProcessor', () => {
 
     it('single frame', () => {
       const frames = [
-        {frame: 'A'},
+        {id: 'A'},
       ];
       const rootFrames = TraceProcessor.resolveRootFrames(frames);
       expect([...rootFrames.entries()]).toEqual([
@@ -183,11 +183,11 @@ describe('TraceProcessor', () => {
 
     it('multiple trees', () => {
       const frames = [
-        {frame: 'C', parent: 'B'},
-        {frame: 'B', parent: 'A'},
-        {frame: 'A'},
-        {frame: 'D'},
-        {frame: 'E', parent: 'D'},
+        {id: 'C', parent: 'B'},
+        {id: 'B', parent: 'A'},
+        {id: 'A'},
+        {id: 'D'},
+        {id: 'E', parent: 'D'},
       ];
       const rootFrames = TraceProcessor.resolveRootFrames(frames);
       expect([...rootFrames.entries()]).toEqual([

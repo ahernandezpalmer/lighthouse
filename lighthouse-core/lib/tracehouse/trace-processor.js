@@ -20,6 +20,7 @@
 /** @typedef {Omit<TraceTimesWithoutFCP, 'traceEnd'>} TraceTimesWithoutFCPAndTraceEnd */
 /** @typedef {Omit<LH.Artifacts.TraceOfTab, 'firstContentfulPaintEvt'|'timings'|'timestamps'> & {timings: TraceTimesWithoutFCP, timestamps: TraceTimesWithoutFCP, firstContentfulPaintEvt?: LH.Artifacts.TraceOfTab['firstContentfulPaintEvt']}} TraceOfTabWithoutFCP */
 /** @typedef {'lastNavigationStart'|'firstResourceSendRequest'} TimeOriginDeterminationMethod */
+/** @typedef {Omit<LH.TraceEvent, 'name'|'args'> & {name: 'FrameCommittedInBrowser', args: {data: {frame: string, url: string, parent?: string}}}} FrameCommittedEvent */
 /** @typedef {Omit<LH.TraceEvent, 'name'|'args'> & {name: 'largestContentfulPaint::Invalidate'|'largestContentfulPaint::Candidate', args: {data?: {size?: number}, frame: string}}} LCPEvent */
 /** @typedef {Omit<LH.TraceEvent, 'name'|'args'> & {name: 'largestContentfulPaint::Candidate', args: {data: {size: number}, frame: string}}} LCPCandidateEvent */
 
@@ -486,7 +487,7 @@ class TraceProcessor {
   static isLCPEvent(evt) {
     if (evt.name !== 'largestContentfulPaint::Invalidate' &&
         evt.name !== 'largestContentfulPaint::Candidate') return false;
-    return !!(evt.args && evt.args.frame);
+    return Boolean(evt.args && evt.args.frame);
   }
 
   /**
@@ -494,8 +495,13 @@ class TraceProcessor {
    * @return {evt is LCPCandidateEvent}
    */
   static isLCPCandidateEvent(evt) {
-    if (evt.name !== 'largestContentfulPaint::Candidate') return false;
-    return !!(evt.args && evt.args.frame && evt.args.data && evt.args.data.size !== undefined);
+    return Boolean(
+      evt.name === 'largestContentfulPaint::Candidate' &&
+      evt.args &&
+      evt.args.frame &&
+      evt.args.data &&
+      evt.args.data.size !== undefined
+    );
   }
 
   /**
@@ -518,20 +524,21 @@ class TraceProcessor {
       if (this.isLCPCandidateEvent(e)) {
         lcpEventsByFrame.set(frame, e);
       } else {
+        // Must be invalidate event.
         lcpEventsByFrame.set(frame, undefined);
       }
     }
 
     /** @type {LCPCandidateEvent | undefined} */
-    let lcpAllFrames;
+    let maxLcpAcrossFrames;
     for (const lcp of lcpEventsByFrame.values()) {
       if (!lcp || !lcp.args.data || !lcp.args.data.size) continue;
-      if (!lcpAllFrames || lcp.args.data.size > lcpAllFrames.args.data.size) {
-        lcpAllFrames = lcp;
+      if (!maxLcpAcrossFrames || lcp.args.data.size > maxLcpAcrossFrames.args.data.size) {
+        maxLcpAcrossFrames = lcp;
       }
     }
 
-    return lcpAllFrames;
+    return maxLcpAcrossFrames;
   }
 
   /**
@@ -564,46 +571,46 @@ class TraceProcessor {
   }
 
   /**
-   * @param {{frame: string, url: string, parent?: string}[]} frames
+   * @param {Array<{id: string, url: string, parent?: string}>} frames
    * @return {Map<string, string>}
    */
   static resolveRootFrames(frames) {
     /** @type {Map<string, string>} */
     const parentFrames = new Map();
-    for (const frameData of frames) {
-      if (!frameData.parent) continue;
-      parentFrames.set(frameData.frame, frameData.parent);
+    for (const frame of frames) {
+      if (!frame.parent) continue;
+      parentFrames.set(frame.id, frame.parent);
     }
 
     /** @type {Map<string, string>} */
-    const rootFrames = new Map();
+    const frameIdToRootFrameId = new Map();
 
     /**
-     * @param {string} frame
+     * @param {string} frameId
      * @return {string}
      */
-    function resolveRootFrame(frame) {
-      let rootFrame = rootFrames.get(frame);
-      if (!rootFrame) {
-        const parentFrame = parentFrames.get(frame);
+    function resolveRootFrame(frameId) {
+      let rootFrameId = frameIdToRootFrameId.get(frameId);
+      if (!rootFrameId) {
+        const parentFrame = parentFrames.get(frameId);
         if (!parentFrame) {
-          rootFrames.set(frame, frame);
-          return frame;
+          frameIdToRootFrameId.set(frameId, frameId);
+          return frameId;
         }
-        rootFrame = rootFrames.get(parentFrame) || resolveRootFrame(parentFrame);
-        rootFrames.set(frame, rootFrame);
+        rootFrameId = frameIdToRootFrameId.get(parentFrame) || resolveRootFrame(parentFrame);
+        frameIdToRootFrameId.set(frameId, rootFrameId);
       }
-      return rootFrame;
+      return rootFrameId;
     }
 
-    for (const frameData of frames) {
-      resolveRootFrame(frameData.frame);
+    for (const frame of frames) {
+      resolveRootFrame(frame.id);
 
       // Early exit if map is filled in.
-      if (rootFrames.size === frames.length) break;
+      if (frameIdToRootFrameId.size === frames.length) break;
     }
 
-    return rootFrames;
+    return frameIdToRootFrameId;
   }
 
   /**
@@ -629,19 +636,31 @@ class TraceProcessor {
     const mainFrameIds = this.findMainFrameIds(keyEvents);
 
     const frames = keyEvents
-      .filter(evt => evt.name === 'FrameCommittedInBrowser')
-      .map(evt => evt.args.data)
-      .filter(/** @return {data is {frame: string, url: string}} */ data => {
-        return Boolean(data && data.frame && data.url);
+      .filter(/** @return {evt is FrameCommittedEvent} */ evt => {
+        return Boolean(
+          evt.name === 'FrameCommittedInBrowser' &&
+          evt.args.data &&
+          evt.args.data.frame &&
+          evt.args.data.url
+        );
+      })
+      .map(evt => {
+        return {
+          id: evt.args.data.frame,
+          url: evt.args.data.url,
+          parent: evt.args.data.parent,
+        };
       });
-    const rootFrames = this.resolveRootFrames(frames);
+    const frameIdToRootFrameId = this.resolveRootFrames(frames);
 
     // Filter to just events matching the frame ID, just to make sure.
     const frameEvents = keyEvents.filter(e => e.args.frame === mainFrameIds.frameId);
 
     // Filter to just events matching the main frame ID or any child frame IDs.
     const frameTreeEvents = keyEvents.filter(e => {
-      return e.args && e.args.frame && rootFrames.get(e.args.frame) === mainFrameIds.frameId;
+      return e.args &&
+        e.args.frame &&
+        frameIdToRootFrameId.get(e.args.frame) === mainFrameIds.frameId;
     });
 
     // Compute our time origin to use for all relative timings.
