@@ -505,6 +505,8 @@ class TraceProcessor {
   }
 
   /**
+   * Returns the maximum LCP event across all frames in `events`.
+   * Sets `invalidated` flag if LCP of every frame is invalidated.
    * @param {LH.TraceEvent[]} events
    * @param {LH.TraceEvent} timeOriginEvent
    * @return {{lcp: LCPEvent | undefined, invalidated: boolean}}
