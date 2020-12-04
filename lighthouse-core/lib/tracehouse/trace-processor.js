@@ -554,30 +554,12 @@ class TraceProcessor {
 
     /** @type {Map<string, string>} */
     const frameIdToRootFrameId = new Map();
-
-    /**
-     * @param {string} frameId
-     * @return {string}
-     */
-    function resolveRootFrame(frameId) {
-      let rootFrameId = frameIdToRootFrameId.get(frameId);
-      if (!rootFrameId) {
-        const parentFrame = parentFrames.get(frameId);
-        if (!parentFrame) {
-          frameIdToRootFrameId.set(frameId, frameId);
-          return frameId;
-        }
-        rootFrameId = frameIdToRootFrameId.get(parentFrame) || resolveRootFrame(parentFrame);
-        frameIdToRootFrameId.set(frameId, rootFrameId);
-      }
-      return rootFrameId;
-    }
-
     for (const frame of frames) {
-      resolveRootFrame(frame.id);
-
-      // Early exit if map is filled in.
-      if (frameIdToRootFrameId.size === frames.length) break;
+      let cur = frame.id;
+      while (parentFrames.has(cur)) {
+        cur = /** @type {string} */ (parentFrames.get(cur));
+      }
+      frameIdToRootFrameId.set(frame.id, cur);
     }
 
     return frameIdToRootFrameId;

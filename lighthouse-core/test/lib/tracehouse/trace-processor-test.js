@@ -191,9 +191,9 @@ describe('TraceProcessor', () => {
       ];
       const rootFrames = TraceProcessor.resolveRootFrames(frames);
       expect([...rootFrames.entries()]).toEqual([
-        ['A', 'A'],
-        ['B', 'A'],
         ['C', 'A'],
+        ['B', 'A'],
+        ['A', 'A'],
         ['D', 'D'],
         ['E', 'D'],
       ]);
