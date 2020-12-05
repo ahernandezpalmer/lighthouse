@@ -125,7 +125,7 @@ declare global {
       /** Screen emulation properties (width, height, dpr, mobile viewport) to apply. Typically set to false if mobile emulation is applied outside of Lighthouse, or its being run on a mobile device. **TODO: What do we recommend for desktop?** */
       screenEmulation?: LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest | false;
       /** User Agent to apply */
-      emulatedUserAgent?: string;
+      emulatedUserAgent?: string | false;
       /** The method used to throttle the network. */
       throttlingMethod?: 'devtools'|'simulate'|'provided';
       /** The throttling config settings. */
