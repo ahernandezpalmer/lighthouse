@@ -116,8 +116,7 @@ class FullPageScreenshot extends Gatherer {
 
     // In case some other program is controlling emulation, try to remember what the device looks
     // like now and reset after gatherer is done.
-    // TODO(paulirish).. pull this from disableScreenEmu probably ***
-    const lighthouseControlsEmulation = passContext.settings.formFactor !== 'none' && !passContext.settings.internalDisableDeviceScreenEmulation;
+    const lighthouseControlsEmulation = passContext.settings.screenEmulation !== false;
 
     try {
       return {

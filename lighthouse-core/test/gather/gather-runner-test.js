@@ -109,7 +109,6 @@ class EmulationDriver extends Driver {
 }
 
 const fakeDriver = require('./fake-driver.js');
-const fakeDriverUsingRealMobileDevice = fakeDriver.fakeDriverUsingRealMobileDevice;
 
 /** @type {EmulationDriver} */
 let driver;
@@ -285,8 +284,8 @@ describe('GatherRunner', function() {
       connectionStub.sendCommand.findInvocation('Emulation.setCPUThrottlingRate')).toThrow();
   });
 
-  it('applies the correct emulation given a particular emulationFormFactor', async () => {
-    /** @param {'mobile'|'desktop'|'none'} formFactor */
+  it('applies the correct emulation given a particular formFactor', async () => {
+    /** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
     const getSettings = formFactor => ({
       formFactor: formFactor,
     });
@@ -299,11 +298,6 @@ describe('GatherRunner', function() {
     await GatherRunner.setupDriver(driver, {settings: getSettings('desktop')});
     expect(connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride'))
       .toMatchObject({mobile: false});
-
-    resetDefaultMockResponses();
-    await GatherRunner.setupDriver(driver, {settings: getSettings('none')});
-    expect(() =>
-      connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride')).toThrow();
   });
 
   it('sets throttling according to settings', async () => {
