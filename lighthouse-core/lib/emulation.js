@@ -34,14 +34,14 @@ const NO_CPU_THROTTLE_METRICS = {
  */
 async function emulate(driver, settings) {
   // In DevTools, emulation is applied before Lighthouse starts (to deal with viewport emulation bugs)
-  // As a result, we don't double-apply viewport emulation (devtools sets `disableScreenEmulation`).
+  // As a result, we don't double-apply viewport emulation (devtools sets `screenEmulation` to `false`).
   // UA emulation, however, is lost in the protocol handover from devtools frontend to the lighthouse_worker. So it's always applied.
 
   // Network.enable must be called for UA overriding to work
   await driver.sendCommand('Network.enable');
   await driver.sendCommand('Network.setUserAgentOverride', {userAgent: settings.emulatedUserAgent});
 
-  if (settings.disableScreenEmulation) {
+  if (settings.screenEmulation !== false) {
     await driver.sendCommand('Emulation.setDeviceMetricsOverride', settings.screenEmulation);
     await driver.sendCommand('Emulation.setTouchEmulationEnabled', {enabled: settings.screenEmulation.mobile});
   }

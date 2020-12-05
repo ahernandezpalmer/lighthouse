@@ -122,10 +122,8 @@ declare global {
       disableStorageReset?: boolean;
       /** How Lighthouse should interpret this run in regards to perf scoring and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
       formFactor: 'mobile'|'desktop';
-      /** If true, Lighthouse will not apply any screen/viewport emulation. Typically set to true if mobile emulation is applied outside of Lighthouse, or its being run on a mobile device. **TODO: What do we recommend for desktop?** */
-      disableScreenEmulation?: boolean;
-      /** Screen emulation properties (width, height, dpr, mobile viewport) to apply */
-      screenEmulation?: LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest;
+      /** Screen emulation properties (width, height, dpr, mobile viewport) to apply. Typically set to false if mobile emulation is applied outside of Lighthouse, or its being run on a mobile device. **TODO: What do we recommend for desktop?** */
+      screenEmulation?: LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest | false;
       /** User Agent to apply */
       emulatedUserAgent?: string;
       /** The method used to throttle the network. */

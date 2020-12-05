@@ -98,7 +98,6 @@ const defaultSettings = {
   formFactor: 'mobile',
   throttling: throttling.mobileSlow4G,
   throttlingMethod: 'simulate',
-  disableScreenEmulation: false,
   screenEmulation: screenEmulationMetrics.mobile,
   emulatedUserAgent: userAgents.mobile,
 
