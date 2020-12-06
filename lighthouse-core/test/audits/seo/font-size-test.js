@@ -6,6 +6,7 @@
 'use strict';
 
 const FontSizeAudit = require('../../../audits/seo/font-size.js');
+const constants = require('../../../config/constants.js');
 const assert = require('assert').strict;
 
 const URL = {
@@ -18,7 +19,15 @@ const validViewport = 'width=device-width';
 
 describe('SEO: Font size audit', () => {
   const makeMetaElements = viewport => [{name: 'viewport', content: viewport}];
-  const getFakeContext = () => ({computedCache: new Map()});
+
+  /** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
+  const getFakeContext = (formFactor = 'mobile') => ({
+    computedCache: new Map(),
+    settings: {
+      formFactor: formFactor,
+      screenEmulation: constants.screenEmulationMetrics[formFactor],
+    },
+  });
 
   it('fails when viewport is not set', async () => {
     const artifacts = {
@@ -212,8 +221,7 @@ describe('SEO: Font size audit', () => {
       MetaElements: [],
       FontSize: {},
     };
-    const desktopContext = getFakeContext();
-    desktopContext.settings = {formFactor: 'desktop'};
+    const desktopContext = getFakeContext('desktop');
     const auditResult = await FontSizeAudit.audit(artifacts, desktopContext);
     expect(auditResult.score).toBe(1);
     expect(auditResult.notApplicable).toBe(true);

@@ -8,6 +8,7 @@
 const Interactive = require('../../../audits/metrics/interactive.js');
 const assert = require('assert').strict;
 const options = Interactive.defaultOptions;
+const constants = require('../../../config/constants.js');
 
 const acceptableTrace = require('../../fixtures/traces/progressive-app-m60.json');
 const acceptableDevToolsLog =
@@ -16,6 +17,17 @@ const acceptableDevToolsLog =
 const redirectTrace = require('../../fixtures/traces/site-with-redirect.json');
 const redirectDevToolsLog = require('../../fixtures/traces/site-with-redirect.devtools.log.json');
 
+/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
+/** @param {LH.SharedFlagsSettings['throttlingMethod']} throttlingMethod */
+const getFakeContext = (formFactor, throttlingMethod) => ({
+  options: options,
+  computedCache: new Map(),
+  settings: {
+    formFactor: formFactor,
+    throttlingMethod,
+    screenEmulation: constants.screenEmulationMetrics[formFactor],
+  },
+});
 
 /* eslint-env jest */
 describe('Performance: interactive audit', () => {
@@ -29,8 +41,7 @@ describe('Performance: interactive audit', () => {
       },
     };
 
-    const context = {options, settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
-    return Interactive.audit(artifacts, context).then(output => {
+    return Interactive.audit(artifacts, getFakeContext('mobile', 'provided')).then(output => {
       assert.equal(output.score, 1);
       assert.equal(Math.round(output.numericValue), 1582);
       expect(output.displayValue).toBeDisplayString('1.6\xa0s');
@@ -47,8 +58,7 @@ describe('Performance: interactive audit', () => {
       },
     };
 
-    const context = {options, settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
-    return Interactive.audit(artifacts, context).then(output => {
+    return Interactive.audit(artifacts, getFakeContext('mobile', 'provided')).then(output => {
       assert.equal(output.score, 0.97);
       assert.equal(Math.round(output.numericValue), 2712);
       expect(output.displayValue).toBeDisplayString('2.7\xa0s');

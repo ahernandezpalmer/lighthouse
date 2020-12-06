@@ -7,10 +7,22 @@
 
 const FMPAudit = require('../../../audits/metrics/first-meaningful-paint.js');
 const Audit = require('../../../audits/audit.js');
+const constants = require('../../../config/constants.js');
 const assert = require('assert').strict;
 const options = FMPAudit.defaultOptions;
 const trace = require('../../fixtures/traces/progressive-app-m60.json');
 const devtoolsLogs = require('../../fixtures/traces/progressive-app-m60.devtools.log.json');
+
+
+/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
+const getFakeContext = (formFactor = 'mobile') => ({
+  options,
+  computedCache: new Map(),
+  settings: {
+    formFactor: formFactor,
+    screenEmulation: constants.screenEmulationMetrics[formFactor],
+  },
+});
 
 /* eslint-env jest */
 describe('Performance: first-meaningful-paint audit', () => {
@@ -19,7 +31,8 @@ describe('Performance: first-meaningful-paint audit', () => {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
     };
-    const context = {options, settings: {throttlingMethod: 'provided'}, computedCache: new Map()};
+    const context = getFakeContext();
+    context.settings.throttlingMethod = 'provided';
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     assert.equal(fmpResult.score, 1);
@@ -32,7 +45,8 @@ describe('Performance: first-meaningful-paint audit', () => {
       traces: {[Audit.DEFAULT_PASS]: trace},
       devtoolsLogs: {[Audit.DEFAULT_PASS]: devtoolsLogs},
     };
-    const context = {options, settings: {throttlingMethod: 'simulate'}, computedCache: new Map()};
+    const context = getFakeContext();
+    context.settings.throttlingMethod = 'simulate';
     const fmpResult = await FMPAudit.audit(artifacts, context);
 
     expect({

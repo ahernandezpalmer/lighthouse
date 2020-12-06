@@ -8,9 +8,17 @@
 /* eslint-env jest */
 
 const TapTargetsAudit = require('../../../audits/seo/tap-targets.js');
+const constants = require('../../../config/constants.js');
 const assert = require('assert').strict;
 
-const getFakeContext = () => ({computedCache: new Map()});
+/** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
+const getFakeContext = (formFactor = 'mobile') => ({
+  computedCache: new Map(),
+  settings: {
+    formFactor: formFactor,
+    screenEmulation: constants.screenEmulationMetrics[formFactor],
+  },
+});
 
 function auditTapTargets(tapTargets, {MetaElements = [{
   name: 'viewport',
@@ -212,12 +220,11 @@ describe('SEO: Tap targets audit', () => {
   });
 
   it('is not applicable on desktop', async () => {
-    const desktopContext = getFakeContext();
-    desktopContext.settings = {formFactor: 'desktop'};
+    const desktopContext = getFakeContext('desktop');
 
     const auditResult = await auditTapTargets(getBorderlineTapTargets({
       overlapSecondClientRect: true,
-    }), desktopContext);
+    }), undefined, desktopContext);
     assert.equal(auditResult.score, 1);
     assert.equal(auditResult.notApplicable, true);
   });

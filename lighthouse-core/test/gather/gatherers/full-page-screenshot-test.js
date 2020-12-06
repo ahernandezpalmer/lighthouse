@@ -115,6 +115,7 @@ describe('FullPageScreenshot gatherer', () => {
     });
     const passContext = {
       settings: {
+        screenEmulation: false,
         formFactor: 'mobile',
       },
       driver,

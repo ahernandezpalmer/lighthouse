@@ -13,6 +13,7 @@ const Gatherer = require('../../gather/gatherers/gatherer.js');
 const GatherRunner_ = require('../../gather/gather-runner.js');
 const assert = require('assert').strict;
 const Config = require('../../config/config.js');
+const constants = require('../../config/constants.js');
 const unresolvedPerfLog = require('./../fixtures/unresolved-perflog.json');
 const NetworkRequest = require('../../lib/network-request.js');
 const LHError = require('../../lib/lh-error.js');
@@ -268,13 +269,14 @@ describe('GatherRunner', function() {
     test('works when running on desktop device', DESKTOP_UA, 'desktop');
   });
 
+  /** @param {'mobile' | 'desktop'} formFactor */
+  const getSettings = formFactor => ({
+    formFactor: formFactor,
+    screenEmulation: constants.screenEmulationMetrics[formFactor],
+  });
+
   it('sets up the driver to begin emulation when all flags are undefined', async () => {
-    await GatherRunner.setupDriver(driver, {
-      settings: {
-        formFactor: 'mobile',
-        throttlingMethod: 'provided',
-      },
-    });
+    await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
 
     connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride');
     expect(connectionStub.sendCommand.findInvocation('Network.emulateNetworkConditions')).toEqual({
@@ -285,11 +287,6 @@ describe('GatherRunner', function() {
   });
 
   it('applies the correct emulation given a particular formFactor', async () => {
-    /** @param {LH.SharedFlagsSettings['formFactor']} formFactor */
-    const getSettings = formFactor => ({
-      formFactor: formFactor,
-    });
-
     await GatherRunner.setupDriver(driver, {settings: getSettings('mobile')});
     expect(connectionStub.sendCommand.findInvocation('Emulation.setDeviceMetricsOverride'))
       .toMatchObject({mobile: true});
@@ -304,6 +301,7 @@ describe('GatherRunner', function() {
     await GatherRunner.setupDriver(driver, {
       settings: {
         formFactor: 'mobile',
+        screenEmulation: constants.screenEmulationMetrics.mobile,
         throttlingMethod: 'devtools',
         throttling: {
           requestLatencyMs: 100,
