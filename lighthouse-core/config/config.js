@@ -161,14 +161,31 @@ function assertValidGatherer(gathererInstance, gathererName) {
   }
 }
 
+
 /**
- *
+ * Validate the LH.Flags
+ * @param {LH.Flags} flags
+ */
+function assertValidFlags(flags) {
+  // @ts-expect-error Checking for removed flags
+  if (flags.emulatedFormFactor || flags.internalDisableDeviceScreenEmulation) {
+    throw new Error('Invalid emulation flag. Emulation configuration changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md'); // eslint-disable-line max-len
+  }
+}
+
+/**
+ * Validate the settings after they've been built
  * @param {LH.Config.Settings} settings
  */
 function assertValidSettings(settings) {
-  // @ts-expect-error Checking for removed settings
-  if (settings['emulatedFormFactor'] || settings['internalDisableDeviceScreenEmulation']) {
-    throw new Error('Emulation setting changed in LH 7.0. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md'); // eslint-disable-line max-len
+  if (!settings.formFactor) {
+    throw new Error(`\`settings.formFactor\` must be defined as 'mobile' or 'desktop'. See https://github.com/GoogleChrome/lighthouse/blob/master/docs/emulation.md`); // eslint-disable-line max-len
+  }
+
+  if (settings.screenEmulation) {
+    if (settings.screenEmulation.mobile !== (settings.formFactor === 'mobile')) {
+      log.error('config', `Screen emulation mobile setting (${settings.screenEmulation.mobile}) does not match formFactor setting (${settings.formFactor})`); // eslint-disable-line max-len
+    }
   }
 }
 
@@ -344,6 +361,9 @@ class Config {
     // Validate and merge in plugins (if any).
     configJSON = Config.mergePlugins(configJSON, flags, configDir);
 
+    if (flags) {
+      assertValidFlags(flags);
+    }
     const settings = Config.initSettings(configJSON.settings, flags);
 
     // Augment passes with necessary defaults and require gatherers.

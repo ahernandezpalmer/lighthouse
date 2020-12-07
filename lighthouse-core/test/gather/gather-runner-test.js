@@ -269,7 +269,7 @@ describe('GatherRunner', function() {
     test('works when running on desktop device', DESKTOP_UA, 'desktop');
   });
 
-  /** @param {'mobile' | 'desktop'} formFactor */
+  /** @param {NonNullable<LH.SharedFlagsSettings['formFactor']>}formFactor */
   const getSettings = formFactor => ({
     formFactor: formFactor,
     screenEmulation: constants.screenEmulationMetrics[formFactor],
