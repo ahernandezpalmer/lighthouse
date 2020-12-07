@@ -44,7 +44,7 @@ function getFlags(manualArgv) {
           'lighthouse <url> --output=json --output-path=./report.json --save-assets',
           'Save trace, screenshots, and named JSON report.')
       .example(
-          'lighthouse <url> --emulated-form-factor=none --throttling-method=provided',
+          'lighthouse <url> --no-screenEmulation --throttling-method=provided --no-emulatedUserAgent',
           'Disable device emulation and all throttling')
       .example(
           'lighthouse <url> --chrome-flags="--window-size=412,660"',
@@ -82,7 +82,7 @@ function getFlags(manualArgv) {
       .group(
         [
           'save-assets', 'list-all-audits', 'list-trace-categories', 'print-config', 'additional-trace-categories',
-          'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'emulated-form-factor',
+          'config-path', 'preset', 'chrome-flags', 'port', 'hostname', 'form-factor',
           'max-wait-for-load', 'enable-error-reporting', 'gather-mode', 'audit-mode',
           'only-audits', 'only-categories', 'skip-audits', 'budget-path',
         ],
@@ -96,7 +96,11 @@ function getFlags(manualArgv) {
         'blocked-url-patterns': 'Block any network requests to the specified URL patterns',
         'disable-storage-reset':
             'Disable clearing the browser cache and other storage APIs before a run',
-        'emulated-form-factor': 'Controls the emulated device form factor (mobile vs. desktop) if not disabled',
+
+        'form-factor': 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
+        'screenEmulation': 'Sets screen emulation parameters. Use --no-screenEmulation to disable. Otherwise set the 4 parameters individually: --screenEmulation.mobile=true --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
+        'emulatedUserAgent': 'Sets useragent emulation',
+
         'throttling-method': 'Controls throttling method',
         'throttling.rttMs': 'Controls simulated network RTT (TCP layer)',
         'throttling.throughputKbps': 'Controls simulated network download throughput',
@@ -104,6 +108,7 @@ function getFlags(manualArgv) {
         'throttling.downloadThroughputKbps': 'Controls emulated network download throughput',
         'throttling.uploadThroughputKbps': 'Controls emulated network upload throughput',
         'throttling.cpuSlowdownMultiplier': 'Controls simulated + emulated CPU throttling',
+
         'gather-mode':
             'Collect artifacts from a connected browser and save to disk. (Artifacts folder path may optionally be provided). If audit-mode is not also enabled, the run will quit early.',
         'audit-mode': 'Process saved artifacts from disk. (Artifacts folder path may be provided, otherwise defaults to ./latest-run/)',
@@ -151,9 +156,9 @@ function getFlags(manualArgv) {
       .boolean([
         'disable-storage-reset', 'save-assets', 'list-all-audits',
         'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config',
-        'chrome-ignore-default-flags',
+        'chrome-ignore-default-flags', 'screenEmulation.mobile',
       ])
-      .choices('emulated-form-factor', ['mobile', 'desktop', 'none'])
+      .choices('form-factor', ['mobile', 'desktop'])
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
       .choices('preset', ['perf', 'experimental'])
       // force as an array
@@ -174,6 +179,7 @@ function getFlags(manualArgv) {
       .default('chrome-flags', '')
       .default('output', ['html'])
       .default('port', 0)
+      .default('form-factor', 'mobile')
       .default('hostname', 'localhost')
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .default('channel', 'cli')

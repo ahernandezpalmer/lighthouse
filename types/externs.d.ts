@@ -122,7 +122,7 @@ declare global {
       disableStorageReset?: boolean;
 
       // TODO: formFactor should really be required, but since this type is shared in Flags, we can't reasonably do that. We'll likely need to separate SharedFlagsSettings into CLI Flags and Config Settings.
-      /** How Lighthouse should interpret this run in regards to perf scoring and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
+      /** How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
       formFactor?: 'mobile'|'desktop';
       /** Screen emulation properties (width, height, dpr, mobile viewport) to apply. Typically set to false if mobile emulation is applied outside of Lighthouse, or its being run on a mobile device. **TODO: What do we recommend for desktop?** */
       screenEmulation?: LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest | false;
