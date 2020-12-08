@@ -125,7 +125,7 @@ declare global {
       /** How Lighthouse should interpret this run in regards to scoring performance metrics and skipping mobile-only tests in desktop. Must be set even if throttling/emulation is being applied outside of Lighthouse. */
       formFactor?: 'mobile'|'desktop';
       /** Screen emulation properties (width, height, dpr, mobile viewport) to apply. Typically set to false if mobile emulation is applied outside of Lighthouse, or its being run on a mobile device. For desktop, we recommend applying consistent desktop screen emulation. */
-      screenEmulation?: LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest | false;
+      screenEmulation?: Pick<LH.Crdp.Emulation.SetDeviceMetricsOverrideRequest, 'width'|'height'|'deviceScaleFactor'|'mobile'> | false;
       /** User Agent to apply */
       emulatedUserAgent?: string | false;
       /** The method used to throttle the network. */
