@@ -17,7 +17,7 @@ You must always set `formFactor`. It doesn't control emulation, but it determine
 
 You can choose how `screenEmulation` is applied. It can accept an object of `{width: number, height: number, deviceScaleRatio: number, mobile: boolean}` to apply that screen emulation or `false` if Lighthouse should avoid applying screen emulation. It's typically set to `false` if either emulation is applied outside of Lighthouse, or it's being run on a mobile device. The `mobile` boolean applies overlay scrollbars and a few other mobile-specific screen emulation characteristics.
 
-You can choose how to handle userAgent emulation. The `emulatedUserAgent` property accepts either a `string` to apply the provided userAgent or `false` if no UA spoofing should be applied. Typically `false` is used if UA spoofing is apply outside of Lighthouse or on a mobile device. You can also redundantly apply userAgent emulation with no risk.
+You can choose how to handle userAgent emulation. The `emulatedUserAgent` property accepts either a `string` to apply the provided userAgent or `false` if no UA spoofing should be applied. Typically `false` is used if UA spoofing is applied outside of Lighthouse or on a mobile device. You can also redundantly apply userAgent emulation with no risk.
 
 If you're using Lighthouse against a mobile device, you want to set `--no-screenEmulation` and `--throttling.cpuSlowdownMultiplier=1`. (`--formFactor=mobile` is the default already).
 
