@@ -28,6 +28,8 @@ function createConfig(categoryIDs, device) {
   /** @type {LH.SharedFlagsSettings} */
   const settings = {
     onlyCategories: categoryIDs,
+    // DevTools handles all the emulation
+    screenEmulation: false,
   };
   if (device === 'desktop') {
     settings.throttling = desktopDense4G;
