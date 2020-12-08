@@ -98,7 +98,7 @@ function getFlags(manualArgv) {
             'Disable clearing the browser cache and other storage APIs before a run',
 
         'form-factor': 'Determines how performance metrics are scored and if mobile-only audits are skipped.',
-        'screenEmulation': 'Sets screen emulation parameters. Use --no-screenEmulation to disable. Otherwise set the 4 parameters individually: --screenEmulation.mobile=true --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
+        'screenEmulation': 'Sets screen emulation parameters. See also --preset. Use --no-screenEmulation to disable. Otherwise set the 4 parameters individually: --screenEmulation.mobile --screenEmulation.width=360 --screenEmulation.height=640 --screenEmulation.deviceScaleFactor=2',
         'emulatedUserAgent': 'Sets useragent emulation',
 
         'throttling-method': 'Controls throttling method',
@@ -156,7 +156,7 @@ function getFlags(manualArgv) {
       .boolean([
         'disable-storage-reset', 'save-assets', 'list-all-audits',
         'list-trace-categories', 'view', 'verbose', 'quiet', 'help', 'print-config',
-        'chrome-ignore-default-flags', 'screenEmulation.mobile',
+        'chrome-ignore-default-flags',
       ])
       .choices('form-factor', ['mobile', 'desktop'])
       .choices('throttling-method', ['devtools', 'provided', 'simulate'])
@@ -181,8 +181,6 @@ function getFlags(manualArgv) {
       .default('port', 0)
       .default('hostname', 'localhost')
       .default('form-factor', 'mobile')
-      // TODO: Remove undefined defaults when yargs-parser is >= v10. https://github.com/yargs/yargs-parser/issues/116
-      .default('screenEmulation.mobile', undefined)
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .default('channel', 'cli')
       .check(/** @param {LH.CliFlags} argv */ (argv) => {

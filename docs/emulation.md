@@ -4,9 +4,6 @@
 In Lighthouse, "Emulation" refers to the screen/viewport emulation and UserAgent string spoofing.
 ["Throttling"](./throttling.md) covers the similar topics around network and CPU throttling/simulation.
 
-In Lighthouse v7, most of the configuration regarding emulation changed to be more intuitive and clear. The [tracking issue](https://github.com/GoogleChrome/lighthouse/issues/10910
-) captures additional motivations.
-
 With the default configuration, Lighthouse emulates a mobile device. There's [a `desktop` configuration](../lighthouse-core/config/desktop-config.js), available to CLI users with `--preset=desktop`, which applies a consistent desktop environment and scoring calibration.
 
 ### Advanced emulation setups
@@ -22,6 +19,9 @@ You can choose how to handle userAgent emulation. The `emulatedUserAgent` proper
 If you're using Lighthouse on a mobile device, you want to set `--no-screenEmulation` and `--throttling.cpuSlowdownMultiplier=1`. (`--formFactor=mobile` is the default already).
 
 ### Changes made in v7
+
+In Lighthouse v7, most of the configuration regarding emulation changed to be more intuitive and clear. The [tracking issue](https://github.com/GoogleChrome/lighthouse/issues/10910
+) captures additional motivations.
 
 * Removed: The `emulatedFormFactor` property (which determined how emulation is applied).
 * Removed: The `TestedAsMobileDevice` artifact is removed. Instead of being inferred, the  `formFactor` property is used.

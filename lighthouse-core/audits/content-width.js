@@ -52,7 +52,7 @@ class ContentWidth extends Audit {
     const windowWidth = artifacts.ViewportDimensions.outerWidth;
     const widthsMatch = viewportWidth === windowWidth;
 
-    if (context.settings.formFactor !== 'mobile') {
+    if (context.settings.formFactor === 'desktop') {
       return {
         score: 1,
         notApplicable: true,
