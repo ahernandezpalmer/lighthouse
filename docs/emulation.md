@@ -2,7 +2,7 @@
 # Emulation in Lighthouse
 
 In Lighthouse, "Emulation" refers to the screen/viewport emulation and UserAgent string spoofing.
-["Throttling"](./throttling.md) covers the similar topics around network connection throttling/simulation and CPU throttling.
+["Throttling"](./throttling.md) covers the similar topics around network and CPU throttling/simulation.
 
 In Lighthouse v7, most of the configuration regarding emulation changed to be more intuitive and clear. The [tracking issue](https://github.com/GoogleChrome/lighthouse/issues/10910
 ) captures additional motivations.
