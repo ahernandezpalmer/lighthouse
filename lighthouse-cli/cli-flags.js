@@ -179,8 +179,10 @@ function getFlags(manualArgv) {
       .default('chrome-flags', '')
       .default('output', ['html'])
       .default('port', 0)
-      .default('form-factor', 'mobile')
       .default('hostname', 'localhost')
+      .default('form-factor', 'mobile')
+      // TODO: Remove undefined defaults when yargs-parser is >= v10. https://github.com/yargs/yargs-parser/issues/116
+      .default('screenEmulation.mobile', undefined)
       .default('enable-error-reporting', undefined) // Undefined so prompted by default
       .default('channel', 'cli')
       .check(/** @param {LH.CliFlags} argv */ (argv) => {
