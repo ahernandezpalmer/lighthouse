@@ -35,6 +35,9 @@
       "mobile": true,
       "width": 360
     },
+    "providedDeviceString": null,
+    "providedNetworkThrottlingString": null,
+    "providedCPUThrottlingString": null,
     "channel": "cli",
     "budgets": [
       {

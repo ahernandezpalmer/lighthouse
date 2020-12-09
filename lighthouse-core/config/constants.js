@@ -101,6 +101,10 @@ const defaultSettings = {
   screenEmulation: screenEmulationMetrics.mobile,
   emulatedUserAgent: userAgents.mobile,
 
+  providedDeviceString: null,
+  providedNetworkThrottlingString: null,
+  providedCPUThrottlingString: null,
+
   auditMode: false,
   gatherMode: false,
   disableStorageReset: false,
