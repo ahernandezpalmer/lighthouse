@@ -101,13 +101,11 @@ module.exports = [
       },
       InstallabilityErrors: {
         errors: {
-          length: '>= 1',
+          length: 1,
           0: {
-            // COMPAT: In m89 the `warn-not-offline-capable` error was added.
-            // https://bugs.chromium.org/p/chromium/issues/detail?id=965802#c46
-            // We've seen this errorId pop up there: https://github.com/GoogleChrome/lighthouse/issues/11800
-            // Our length and errorId assertions allows for just the no-icon-available error or both
-            errorId: /(no-icon-available)|(warn-not-offline-capable)/,
+            // For a few days in m89, the warn-not-offline-capable error also showed up here.
+            // https://github.com/GoogleChrome/lighthouse/issues/11800
+            errorId: /no-icon-available/,
           },
         },
       },
@@ -171,6 +169,33 @@ module.exports = [
         },
       },
     },
+  },
+
+  {
+    lhr: {
+      requestedUrl: 'http://localhost:10503/offline-ready.html?broken',
+      finalUrl: 'http://localhost:10503/offline-ready.html?broken',
+      audits: {
+        'installable-manifest': {
+          score: 0,
+          details: {items: {length: 1}},
+          warnings: {length: 1},
+        },
+      }
+    },
+    artifacts: {
+      InstallabilityErrors: {
+        errors: {
+          length: 2,
+          0: {
+            errorId: /warn-not-offline-capable/,
+          },
+          1: {
+            errorId: /no-icon-available/,
+          }
+        },
+      },
+    }
   },
 
   {
