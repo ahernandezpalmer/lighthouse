@@ -141,7 +141,7 @@ class ElementScreenshotRenderer {
   static installOverlayFeature(dom, templateContext, fullPageScreenshot) {
     const rootEl = dom.find('.lh-root', dom.document());
     if (!rootEl) {
-      return console.warn('No lh-root. Overlay install failed.');
+      return console.warn('No lh-root. Overlay install failed.'); // eslint-disable-line no-console
     }
 
 
