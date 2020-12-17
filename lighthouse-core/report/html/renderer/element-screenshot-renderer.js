@@ -144,15 +144,15 @@ class ElementScreenshotRenderer {
     if (!containerEl) throw new Error('could not find parent element');
 
     const screenshotOverlayClass = 'lh-feature-screenshot-overlay';
+    // Don't install the feature more than once.
     if (containerEl.classList.contains(screenshotOverlayClass)) return;
     containerEl.classList.add(screenshotOverlayClass);
 
-    dom.document().addEventListener('click', e => {
+    containerEl.addEventListener('click', e => {
       const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
       const el = /** @type {?HTMLElement} */ (target.closest('.lh-element-screenshot'));
       if (!el) return;
-
       // Don't create a lightbox if the click is within in a lightbox
       if (el.closest('.lh-element-screenshot__overlay')) return;
 
@@ -186,11 +186,7 @@ class ElementScreenshotRenderer {
         return overlay.remove();
       }
       overlay.appendChild(screenshotElement);
-      containerEl.addEventListener('click', () => {
-        overlay.remove();
-      });
-
-      containerEl.insertBefore(overlay, topbarEl.nextElementSibling);
+      overlay.addEventListener('click', () => overlay.remove());
     });
   }
 
