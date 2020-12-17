@@ -1562,6 +1562,11 @@
   cursor: zoom-out;
 }
 
+.lh-element-screenshot__overlay .lh-element-screenshot {
+  margin-right: 0; /* clearing margin used in thumbnail case */
+  outline: 1px solid var(--color-gray-700);
+}
+
 .lh-feature-screenshot-overlay .lh-element-screenshot {
   cursor: zoom-out;
 }
