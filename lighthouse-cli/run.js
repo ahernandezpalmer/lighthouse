@@ -96,7 +96,6 @@ function printProtocolTimeoutErrorAndExit() {
  * @return {never}
  */
 function printRuntimeErrorAndExit(err) {
-  console.log('hi', err.friendlyMessage, err.message);
   console.error('Runtime error encountered:', err.friendlyMessage || err.message);
   if (err.stack) {
     console.error(err.stack);
