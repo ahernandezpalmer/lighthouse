@@ -153,6 +153,7 @@ class ElementScreenshotRenderer {
     rootEl.addEventListener('click', e => {
       const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
+      // Only activate the overlay for clicks on the screenshot *preview* of an element, not the full-size too.
       const el = /** @type {?HTMLElement} */ (target.closest('.lh-node > .lh-element-screenshot'));
       if (!el) return;
 
