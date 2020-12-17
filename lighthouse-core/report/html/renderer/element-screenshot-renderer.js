@@ -151,10 +151,8 @@ class ElementScreenshotRenderer {
     containerEl.addEventListener('click', e => {
       const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
-      const el = /** @type {?HTMLElement} */ (target.closest('.lh-element-screenshot'));
+      const el = /** @type {?HTMLElement} */ (target.closest('.lh-node > .lh-element-screenshot'));
       if (!el) return;
-      // Don't create a lightbox if the click is within in a lightbox
-      if (el.closest('.lh-element-screenshot__overlay')) return;
 
       const overlay = dom.createElement('div', 'lh-element-screenshot__overlay');
       containerEl.insertBefore(overlay, topbarEl.nextElementSibling);
