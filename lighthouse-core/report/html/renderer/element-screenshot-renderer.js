@@ -139,23 +139,25 @@ class ElementScreenshotRenderer {
    * @param {LH.Artifacts.FullPageScreenshot} fullPageScreenshot
    */
   static installOverlayFeature(dom, templateContext, fullPageScreenshot) {
-    const topbarEl = dom.find('.lh-topbar', dom.document());
-    const containerEl = topbarEl.parentElement;
-    if (!containerEl) throw new Error('could not find parent element');
+    const rootEl = dom.find('.lh-root', dom.document());
+    if (!rootEl) {
+      return console.warn('No lh-root. Overlay install failed.');
+    }
+
 
     const screenshotOverlayClass = 'lh-feature-screenshot-overlay';
     // Don't install the feature more than once.
-    if (containerEl.classList.contains(screenshotOverlayClass)) return;
-    containerEl.classList.add(screenshotOverlayClass);
+    if (rootEl.classList.contains(screenshotOverlayClass)) return;
+    rootEl.classList.add(screenshotOverlayClass);
 
-    containerEl.addEventListener('click', e => {
+    rootEl.addEventListener('click', e => {
       const target = /** @type {?HTMLElement} */ (e.target);
       if (!target) return;
       const el = /** @type {?HTMLElement} */ (target.closest('.lh-node > .lh-element-screenshot'));
       if (!el) return;
 
       const overlay = dom.createElement('div', 'lh-element-screenshot__overlay');
-      containerEl.insertBefore(overlay, topbarEl.nextElementSibling);
+      rootEl.append(overlay);
 
       // The newly-added overlay has the bounding rect we need
       const maxLightboxSize = {
