@@ -145,7 +145,7 @@ class ElementScreenshotRenderer {
     }
 
 
-    const screenshotOverlayClass = 'lh-feature-screenshot-overlay';
+    const screenshotOverlayClass = 'lh-screenshot-overlay--enabled';
     // Don't install the feature more than once.
     if (rootEl.classList.contains(screenshotOverlayClass)) return;
     rootEl.classList.add(screenshotOverlayClass);

@@ -1569,10 +1569,10 @@
   outline: 1px solid var(--color-gray-700);
 }
 
-.lh-feature-screenshot-overlay .lh-element-screenshot {
+.lh-screenshot-overlay--enabled .lh-element-screenshot {
   cursor: zoom-out;
 }
-.lh-feature-screenshot-overlay .lh-node .lh-element-screenshot {
+.lh-screenshot-overlay--enabled .lh-node .lh-element-screenshot {
   cursor: zoom-in;
 }
 
