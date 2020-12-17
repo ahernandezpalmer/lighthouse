@@ -3459,43 +3459,10 @@
       "displayValue": "",
       "details": {
         "type": "opportunity",
-        "headings": [
-          {
-            "key": "url",
-            "valueType": "url",
-            "subItemsHeading": {
-              "key": "source",
-              "valueType": "code"
-            },
-            "label": "URL"
-          },
-          {
-            "key": "totalBytes",
-            "valueType": "bytes",
-            "subItemsHeading": {
-              "key": "sourceBytes"
-            },
-            "label": "Transfer Size"
-          },
-          {
-            "key": "wastedBytes",
-            "valueType": "bytes",
-            "subItemsHeading": {
-              "key": "sourceWastedBytes"
-            },
-            "label": "Potential Savings"
-          }
-        ],
-        "items": [
-          {
-            "url": "http://localhost:10200/dobetterweb/dbw_tester.html",
-            "totalBytes": null,
-            "wastedBytes": null,
-            "wastedPercent": 0
-          }
-        ],
+        "headings": [],
+        "items": [],
         "overallSavingsMs": 0,
-        "overallSavingsBytes": null
+        "overallSavingsBytes": 0
       }
     },
     "uses-webp-images": {
@@ -6930,7 +6897,6 @@
         "audits[total-byte-weight].details.headings[0].text",
         "audits[render-blocking-resources].details.headings[0].label",
         "audits[unminified-javascript].details.headings[0].label",
-        "audits[unused-javascript].details.headings[0].label",
         "audits[uses-webp-images].details.headings[1].label",
         "audits[uses-text-compression].details.headings[0].label",
         "audits[legacy-javascript].details.headings[0].label",
@@ -7176,7 +7142,6 @@
         "audits[total-byte-weight].details.headings[1].text",
         "audits[render-blocking-resources].details.headings[1].label",
         "audits[unminified-javascript].details.headings[1].label",
-        "audits[unused-javascript].details.headings[1].label",
         "audits[uses-text-compression].details.headings[1].label"
       ],
       "lighthouse-core/lib/i18n/i18n.js | columnOverBudget": [
@@ -7764,7 +7729,6 @@
       "lighthouse-core/lib/i18n/i18n.js | columnWastedBytes": [
         "audits[render-blocking-resources].details.headings[2].label",
         "audits[unminified-javascript].details.headings[2].label",
-        "audits[unused-javascript].details.headings[2].label",
         "audits[uses-webp-images].details.headings[3].label",
         "audits[uses-text-compression].details.headings[2].label",
         "audits[legacy-javascript].details.headings[2].label"
