@@ -153,17 +153,18 @@ class ElementScreenshotRenderer {
       const el = /** @type {?HTMLElement} */ (target.closest('.lh-element-screenshot'));
       if (!el) return;
 
-      const maxLightboxSize = {
-        width: dom.document().documentElement.clientWidth,
-        height: dom.document().documentElement.clientHeight * 0.75,
-      };
-      if (dom.isDevTools()) {
-        maxLightboxSize.width = containerEl.clientWidth;
-        maxLightboxSize.height = containerEl.clientHeight * 0.75;
-      }
+      // Don't create a lightbox if the click is within in a lightbox
+      if (el.closest('.lh-element-screenshot__overlay')) return;
 
-      const overlay = dom.createElement('div');
-      overlay.classList.add('lh-element-screenshot__overlay');
+      const overlay = dom.createElement('div', 'lh-element-screenshot__overlay');
+      containerEl.insertBefore(overlay, topbarEl.nextElementSibling);
+
+      // The newly-added overlay has the bounding rect we need
+      const maxLightboxSize = {
+        width: overlay.clientWidth * 0.95,
+        height: overlay.clientHeight * 0.80,
+      };
+
       const elementRectSC = {
         width: Number(el.dataset['rectWidth']),
         height: Number(el.dataset['rectHeight']),
@@ -179,8 +180,11 @@ class ElementScreenshotRenderer {
         elementRectSC,
         maxLightboxSize
       );
-      if (!screenshotElement) return;
 
+      // This would be unexpected here. The null return is used to not create a thumbnail in details-renderer
+      if (!screenshotElement) {
+        return overlay.remove();
+      }
       overlay.appendChild(screenshotElement);
       containerEl.addEventListener('click', () => {
         overlay.remove();
