@@ -1549,12 +1549,13 @@
   outline: 2px solid var(--color-lime-400);
 }
 .lh-element-screenshot__overlay {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  z-index: 1001;
-  background: rgba(0, 0, 0, 0.7);
+  right: 0;
+  bottom: 0;
+  z-index: 2000; /* .lh-topbar is 1000 */
+  background: rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
